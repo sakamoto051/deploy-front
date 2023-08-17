@@ -1,8 +1,19 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
+import axios from 'axios'
+import { useEffect, useState } from 'react'
 
 export default function Home() {
+
+  const [response, setResponse] = useState(null);
+  useEffect(() => {
+    axios.get('https://api.deploytests.com/api/test')
+      .then((res: any) => {
+        setResponse(res.data);
+      });
+  }, []);
+
   return (
     <div className={styles.container}>
       <Head>
@@ -15,6 +26,8 @@ export default function Home() {
         <h1 className={styles.title}>
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
+
+        <p>response = {response}</p>
 
         <p className={styles.description}>
           Get started by editing{' '}
@@ -68,4 +81,11 @@ export default function Home() {
       </footer>
     </div>
   )
+}
+
+export const getJson = async () => {
+  const url = 'https://api.deploytests.com/api/test';
+  const res = await axios.get(url);
+  console.log(res);
+  return res;
 }
